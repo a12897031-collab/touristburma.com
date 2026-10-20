@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#1F1610" />
+  <title>Tourist Burma 2.0 | AI-Native Spatial Travel Platform</title>
+  <meta name="description" content="AI-native, spatial travel intelligence platform for discovering sustainable, culturally conscious, and locally owned experiences in Myanmar." />
+
+  <!-- Google Fonts: Cinzel, Plus Jakarta Sans, Noto Sans Myanmar, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+Myanmar:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Leaflet Maps CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="theme-dark">
+  <!-- Top Accessibility & Field Mode Status Banner -->
+  <aside id="statusBanner" class="status-banner" role="status" aria-live="polite">
+    <div class="banner-content">
+      <span class="pulse-indicator"></span>
+      <span class="banner-text" id="bannerStatusText">
+        <strong>Field Mode Ready</strong> · Spatial PostGIS Engine Active · Verified Local Community Network (Myanmar)
+      </span>
+    </div>
+    <div class="banner-actions">
+      <button id="btnToggleSimulatedOffline" class="btn-text-link" title="Simulate field connectivity mode">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></svg>
+        <span>Toggle Offline Cache</span>
+      </button>
+      <button class="banner-dismiss" aria-label="Dismiss banner" onclick="document.getElementById('statusBanner').style.display='none'">✕</button>
+    </div>
+  </aside>
+
+  <!-- Global Header -->
+  <header class="app-header">
+    <div class="header-left">
+      <a href="#" class="brand-logo" aria-label="Tourist Burma 2.0 Home">
+        <div class="logo-mark">
+          <!-- Stylized Pagoda Spire SVG Icon -->
+          <svg viewBox="0 0 32 32" class="pagoda-icon" fill="currentColor">
+            <path d="M16 2L14 8h4L16 2zM12 9l-2 3h12l-2-3H12zm-3 4l-3 4h20l-3-4H9zm-4 5l-3 5h24l-3-5H5zm-3 6l-2 5h26l-2-5H2z"/>
+          </svg>
+        </div>
+        <div class="logo-text">
+          <div class="logo-title">TOURIST BURMA <span class="version-tag">2.0</span></div>
+          <div class="logo-subtitle">AI-SPATIAL TRAVEL ENGINE</div>
+        </div>
+      </a>
+
+      <!-- Quick Region Nav -->
+      <nav class="region-nav" aria-label="Quick region jump">
+        <button class="region-btn active" data-region="all">All Myanmar</button>
+        <button class="region-btn" data-region="bagan">Bagan</button>
+        <button class="region-btn" data-region="inle">Inle Lake</button>
+        <button class="region-btn" data-region="yangon">Yangon</button>
+        <button class="region-btn" data-region="mandalay">Mandalay</button>
+        <button class="region-btn" data-region="shan">Shan Highlands</button>
+      </nav>
+    </div>
+
+    <div class="header-right">
+      <!-- Currency Switcher -->
+      <button id="currencyToggleBtn" class="pill-btn currency-btn" title="Toggle Currency (USD / MMK)">
+        <span class="currency-indicator">$</span>
+        <span id="currencyLabel" class="currency-label">USD ($)</span>
+      </button>
+
+      <!-- Language Switcher -->
+      <button id="langToggleBtn" class="pill-btn lang-btn" title="Toggle Language (English / Burmese)">
+        <span class="lang-code">EN</span>
+        <span class="lang-alt">မြန်မာ</span>
+      </button>
+
+      <!-- Vendor Portal Modal Trigger -->
+      <button id="btnOpenVendorModal" class="btn-secondary" title="Register as Local Guide, Eco-Lodge, or Artisan">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+        <span class="btn-text">Vendor Portal</span>
+      </button>
+
+      <!-- AI Concierge Drawer Trigger -->
+      <button id="btnOpenAiDrawer" class="btn-primary ai-trigger-btn" aria-label="Open AI Travel Concierge">
+        <span class="sparkle-spark">✦</span>
+        <span class="btn-text">Ask AI Concierge</span>
+        <span class="badge-pulse"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main View Container: Split Screen Explore Grid -->
+  <main class="split-viewport">
+    <!-- LEFT PANEL: Filter & POI Feed -->
+    <section class="left-panel" aria-label="Explore Points of Interest">
+      <!-- Search & Spatial Filter Toolbar -->
+      <div class="panel-header-sticky">
+        <div class="search-bar-wrap">
+          <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input 
+            type="text" 
+            id="searchInput" 
+            placeholder="Search verified guides, lotus weavers, e-bikes, monasteries..." 
+            aria-label="Search experiences" 
+            autocomplete="off"
+          />
+          <button id="clearSearchBtn" class="clear-search-btn" style="display:none;" aria-label="Clear search">✕</button>
+        </div>
+
+        <!-- Category Filter Pills -->
+        <div class="category-scroll-group" role="tablist" aria-label="Experience Categories">
+          <button class="cat-pill active" data-category="ALL" role="tab" aria-selected="true">
+            <span class="cat-icon">✦</span> All Categories
+          </button>
+          <button class="cat-pill" data-category="LOCAL_GUIDE" role="tab" aria-selected="false">
+            <span class="cat-icon">🧭</span> Local Guides
+          </button>
+          <button class="cat-pill" data-category="ECO_LODGE" role="tab" aria-selected="false">
+            <span class="cat-icon">🏡</span> Eco-Lodges
+          </button>
+          <button class="cat-pill" data-category="ARTISAN" role="tab" aria-selected="false">
+            <span class="cat-icon">🏺</span> Artisans & Crafts
+          </button>
+          <button class="cat-pill" data-category="SUSTAINABLE_TRANSPORT" role="tab" aria-selected="false">
+            <span class="cat-icon">🚲</span> Clean Transport
+          </button>
+        </div>
+
+        <!-- Proximity & Spatial Settings Accordion -->
+        <div class="spatial-controls-bar">
+          <div class="spatial-stat">
+            <span class="count-badge" id="resultsCount">0</span>
+            <span class="stat-label">Verified Providers in Myanmar</span>
+          </div>
+
+          <div class="spatial-tools">
+            <div class="radius-control">
+              <label for="radiusSlider" class="radius-label">
+                Radius: <span id="radiusValue">50</span> km
+              </label>
+              <input type="range" id="radiusSlider" min="5" max="300" step="5" value="50" />
+            </div>
+
+            <button id="btnGeoLocate" class="icon-tool-btn" title="Simulate GPS / PostGIS Proximity Query">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <circle cx="12" cy="12" r="3"></circle>
+                <line x1="12" y1="2" x2="12" y2="5"></line>
+                <line x1="12" y1="19" x2="12" y2="22"></line>
+                <line x1="2" y1="12" x2="5" y2="12"></line>
+                <line x1="19" y1="12" x2="22" y2="12"></line>
+              </svg>
+              <span>Near Me</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- POI Feed List Container -->
+      <div id="poiList" class="poi-grid-container" role="feed" aria-busy="false">
+        <!-- Rendered dynamically via app.js -->
+      </div>
+    </section>
+
+    <!-- RIGHT PANEL: Map Canvas -->
+    <section class="right-panel" aria-label="Interactive Cartography">
+      <div id="map" class="map-viewport" role="application" aria-label="Myanmar Travel Map"></div>
+
+      <!-- Floating Map Control Overlays -->
+      <div class="map-overlay-top-right">
+        <div class="map-style-selector">
+          <button class="map-style-btn active" data-style="dark" title="Teak Night Map Style">Teak Night</button>
+          <button class="map-style-btn" data-style="heritage" title="Heritage Warm Parchment Style">Parchment</button>
+          <button class="map-style-btn" data-style="satellite" title="Terrain Map">Terrain</button>
+        </div>
+      </div>
+
+      <div class="map-overlay-bottom-left">
+        <div class="map-legend-card">
+          <div class="legend-header">
+            <span class="legend-title">Spatial Legend</span>
+            <span class="legend-sub">SRID 4326 PostGIS</span>
+          </div>
+          <div class="legend-items">
+            <div class="legend-item"><span class="pin-dot pin-guide"></span> Local Certified Guide</div>
+            <div class="legend-item"><span class="pin-dot pin-lodge"></span> Community Eco-Lodge</div>
+            <div class="legend-item"><span class="pin-dot pin-artisan"></span> Master Heritage Artisan</div>
+            <div class="legend-item"><span class="pin-dot pin-transport"></span> Clean Electric / Boat</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="map-overlay-bottom-right">
+        <button id="btnRecenterMyanmar" class="floating-map-btn" title="Recenter Myanmar">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M12 3v18"/></svg>
+          <span>Fit Myanmar</span>
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Mobile Floating View Switcher (List vs Map) -->
+  <button id="btnMobileViewToggle" class="mobile-view-toggle" aria-label="Toggle between list and map view">
+    <span class="toggle-icon">🗺️</span>
+    <span id="mobileToggleText" class="toggle-text">View Map</span>
+  </button>
+
+  <!-- AI CONCIERGE SLIDE-OVER DRAWER -->
+  <div id="aiDrawerBackdrop" class="drawer-backdrop" aria-hidden="true"></div>
+  <aside id="aiDrawer" class="ai-drawer" role="dialog" aria-modal="true" aria-label="Tourist Burma AI Concierge" aria-hidden="true">
+    <div class="drawer-header">
+      <div class="ai-profile">
+        <div class="ai-avatar">
+          <span class="ai-glow"></span>
+          <span class="ai-icon">✦</span>
+        </div>
+        <div>
+          <div class="ai-title">Tourist Burma 2.0 AI Concierge</div>
+          <div class="ai-sub">Ethical Tourism · Spatial RAG · Google Gemini 1.5 Pro Engine</div>
+        </div>
+      </div>
+      <button id="btnCloseAiDrawer" class="btn-icon-close" aria-label="Close AI Concierge">✕</button>
+    </div>
+
+    <!-- Cultural Ethics Advisory Pill -->
+    <div class="cultural-advisory-bar">
+      <span class="advisory-icon">☸</span>
+      <span>Tuned to support verified local Burmese families and prevent predatory tourism traps.</span>
+    </div>
+
+    <!-- Chat Messages Viewport -->
+    <div id="chatMessages" class="chat-messages" role="log" aria-live="polite">
+      <!-- Initial AI Greeting Message -->
+      <div class="chat-bubble ai-bubble">
+        <div class="bubble-sender">
+          <span class="bubble-tag">Tourist Burma AI</span>
+          <span class="bubble-time">Just now</span>
+        </div>
+        <div class="bubble-content">
+          <p><strong>Mingalaba!</strong> Welcome to Myanmar. I am your culturally conscious travel concierge, powered by real-time spatial knowledge and ethical community standards.</p>
+          <p>Whether you're looking for female-led lotus silk weaving at Inle Lake, quiet sunrise e-bike routes in Bagan, or verified local guides who receive 100% fair living wages—ask me anything below or pick a curated template:</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Prompt Suggestions Chips -->
+    <div class="quick-prompts-bar">
+      <div class="quick-prompts-label">Explore curated spatial prompts:</div>
+      <div class="prompt-chips-wrap">
+        <button class="prompt-chip" data-prompt="Plan a 3-day conscious e-bike and quiet sunrise itinerary in Bagan supporting local workshops.">
+          🚲 3-Day Conscious Bagan
+        </button>
+        <button class="prompt-chip" data-prompt="Find women-led lotus silk weavers and eco long-tail boats in Inle Lake without commercial souvenir stops.">
+          🛶 Inle Lake Artisans
+        </button>
+        <button class="prompt-chip" data-prompt="What are sacred pagoda etiquette and respectful photo guidelines for visitors to Shwedagon?">
+          ☸ Pagoda Etiquette & Culture
+        </button>
+        <button class="prompt-chip" data-prompt="Suggest a 2-day Shan mountain tea trail and organic homestay in Hsipaw.">
+          🍵 Shan Mountain Trail
+        </button>
+      </div>
+    </div>
+
+    <!-- Chat Input Form -->
+    <form id="chatForm" class="chat-input-form">
+      <div class="chat-input-wrap">
+        <textarea 
+          id="chatInput" 
+          rows="1" 
+          placeholder="Ask for custom routes, ethical artisans, respectful guidelines..." 
+          aria-label="Message to AI travel concierge"
+        ></textarea>
+        <button type="submit" id="btnSendChat" class="btn-send-message" aria-label="Send query">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+        </button>
+      </div>
+      <div class="chat-input-footer">
+        <span class="powered-tag">Vercel AI SDK Core · Gemini 1.5 Pro · PostGIS Proximity</span>
+        <button type="button" id="btnClearChatHistory" class="clear-chat-btn">Clear Conversation</button>
+      </div>
+    </form>
+  </aside>
+
+  <!-- VENDOR ONBOARDING / AUDIT MODAL -->
+  <div id="vendorModalBackdrop" class="modal-backdrop" aria-hidden="true"></div>
+  <div id="vendorModal" class="modal-window" role="dialog" aria-modal="true" aria-labelledby="vendorModalTitle" aria-hidden="true">
+    <div class="modal-header">
+      <div>
+        <h2 id="vendorModalTitle" class="modal-title">Vendor & Guide Onboarding</h2>
+        <div class="modal-sub">Register your verified local operation on Tourist Burma 2.0</div>
+      </div>
+      <button id="btnCloseVendorModal" class="btn-icon-close" aria-label="Close modal">✕</button>
+    </div>
+
+    <form id="vendorForm" class="vendor-form">
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="vendorName">Provider / Guide Name *</label>
+          <input type="text" id="vendorName" required placeholder="e.g. U Hla Win Bagan Heritage Walks" />
+        </div>
+
+        <div class="form-group">
+          <label for="vendorCategory">Category *</label>
+          <select id="vendorCategory" required>
+            <option value="LOCAL_GUIDE">Local Guide (Certified)</option>
+            <option value="ECO_LODGE">Eco-Lodge / Community Homestay</option>
+            <option value="ARTISAN">Master Artisan / Craft Guild</option>
+            <option value="SUSTAINABLE_TRANSPORT">Sustainable Transport (E-Bike, Rowboat)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="vendorRegion">Destination Region *</label>
+          <select id="vendorRegion" required>
+            <option value="Bagan">Bagan Archaeological Zone</option>
+            <option value="Inle Lake">Inle Lake & Nyaungshwe</option>
+            <option value="Yangon">Yangon Division</option>
+            <option value="Mandalay">Mandalay & Amarapura</option>
+            <option value="Shan Highlands">Shan Highlands (Hsipaw / Kalaw)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="vendorPriceUsd">Starting Tour Price (USD) *</label>
+          <input type="number" id="vendorPriceUsd" min="1" step="1" required placeholder="35" />
+        </div>
+
+        <div class="form-group full-width">
+          <label for="vendorAddress">Physical Location / Address *</label>
+          <input type="text" id="vendorAddress" required placeholder="e.g. Minnanthu Village, Near Kyauk Gu Umin, Bagan" />
+        </div>
+
+        <div class="form-group">
+          <label for="vendorLat">Latitude (SRID 4326) *</label>
+          <input type="number" id="vendorLat" step="0.000001" required placeholder="21.1717" />
+        </div>
+
+        <div class="form-group">
+          <label for="vendorLng">Longitude (SRID 4326) *</label>
+          <input type="number" id="vendorLng" step="0.000001" required placeholder="94.8585" />
+        </div>
+
+        <div class="form-group full-width">
+          <button type="button" id="btnDetectVendorCoords" class="btn-secondary btn-small">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="12 8 8 12 12 16 16 12 12 8"></polygon></svg>
+            Auto-Fill Coordinates for Selected Region
+          </button>
+        </div>
+
+        <div class="form-group full-width">
+          <label for="vendorTourTitle">Signature Experience Title *</label>
+          <input type="text" id="vendorTourTitle" required placeholder="e.g. Dawn Monastic Alms & Hidden Frescoes of Bagan" />
+        </div>
+
+        <div class="form-group full-width">
+          <label for="vendorDescription">Experience Description & Cultural Commitment *</label>
+          <textarea id="vendorDescription" rows="3" required placeholder="Detail the authentic cultural encounter, fair wages for craftswomen, and eco-friendly practices."></textarea>
+        </div>
+
+        <div class="form-group full-width checkbox-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="vendorEthicsCheck" required checked />
+            <span>I confirm this operation is 100% locally owned, abides by child protection & fair living wage standards, and respects sacred Myanmar heritage monuments.</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-text-link" id="btnCancelVendor">Cancel</button>
+        <button type="submit" class="btn-primary">
+          <span>Verify & Add to Spatial Map</span>
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- PROVIDER DETAIL & BOOKING MODAL -->
+  <div id="detailModalBackdrop" class="modal-backdrop" aria-hidden="true"></div>
+  <div id="detailModal" class="modal-window detail-modal" role="dialog" aria-modal="true" aria-labelledby="detailTitle" aria-hidden="true">
+    <div class="detail-header-cover" id="detailCoverImage">
+      <button id="btnCloseDetailModal" class="btn-icon-close modal-close-overlay" aria-label="Close detail modal">✕</button>
+      <div class="detail-category-badge" id="detailCategoryBadge">LOCAL_GUIDE</div>
+    </div>
+
+    <div class="detail-body">
+      <div class="detail-title-row">
+        <div>
+          <h2 id="detailTitle" class="detail-title">Provider Title</h2>
+          <div class="detail-location-sub" id="detailLocation">Region, Myanmar</div>
+        </div>
+        <div class="detail-price-box">
+          <div class="detail-price-label">DIRECT PRICE</div>
+          <div class="detail-price-val" id="detailPriceVal">$45 USD</div>
+        </div>
+      </div>
+
+      <!-- Verified Ethics Card -->
+      <div class="impact-scorecard">
+        <div class="impact-item">
+          <span class="impact-check">✓</span>
+          <div>
+            <div class="impact-item-title">100% Community-Owned</div>
+            <div class="impact-item-sub">Zero overseas commission extraction</div>
+          </div>
+        </div>
+        <div class="impact-item">
+          <span class="impact-check">✓</span>
+          <div>
+            <div class="impact-item-title">Fair Wage Certified</div>
+            <div class="impact-item-sub">Audited living wages for local team</div>
+          </div>
+        </div>
+        <div class="impact-item">
+          <span class="impact-check">✓</span>
+          <div>
+            <div class="impact-item-title">Heritage Conservation</div>
+            <div class="impact-item-sub">Zero-plastic & sacred etiquette certified</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <h3>About This Experience</h3>
+        <p id="detailDescription" class="detail-description-text"></p>
+      </div>
+
+      <div class="detail-section">
+        <h3>Cultural Guidelines for Visitors</h3>
+        <div class="etiquette-box" id="detailEtiquette">
+          <p>• Remove all footwear, including socks, before entering temple and pagoda premises.</p>
+          <p>• Wear modest attire covering knees and shoulders (traditional Longyi available on-site).</p>
+          <p>• Ask permission before photographing monks, novices, and local craftspersons.</p>
+        </div>
+      </div>
+
+      <div class="detail-actions">
+        <button id="btnFlyToMapFromDetail" class="btn-secondary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"></polygon><line x1="9" y1="3" x2="9" y2="18"></line><line x1="15" y1="6" x2="15" y2="21"></line></svg>
+          <span>View on Map</span>
+        </button>
+        <button id="btnDirectInquiry" class="btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+          <span>Direct Inquiry (No Booking Fees)</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="toast-container" aria-live="assertive"></div>
+
+  <!-- Leaflet Maps Script -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <!-- Application Logic -->
+  <script src="app.js"></script>
+</body>
+</html>
