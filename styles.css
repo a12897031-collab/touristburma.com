@@ -651,6 +651,7 @@ button, input, select, textarea {
   backdrop-filter: blur(6px);
 }
 
+.cat-tag-SACRED_HERITAGE { background: linear-gradient(135deg, rgba(212, 175, 55, 0.95), rgba(200, 90, 50, 0.95)); color: #FFF; font-weight: 700; letter-spacing: 0.05em; }
 .cat-tag-LOCAL_GUIDE { background: rgba(42, 127, 158, 0.85); color: #FFF; }
 .cat-tag-ECO_LODGE { background: rgba(46, 125, 91, 0.85); color: #FFF; }
 .cat-tag-ARTISAN { background: rgba(200, 90, 50, 0.85); color: #FFF; }
@@ -915,6 +916,7 @@ button, input, select, textarea {
   height: 9px;
   border-radius: 50%;
 }
+.pin-heritage { background: var(--color-heritage-gold); box-shadow: 0 0 8px var(--color-heritage-gold); }
 .pin-guide { background: var(--color-inle-azure); box-shadow: 0 0 6px var(--color-inle-azure); }
 .pin-lodge { background: var(--color-shan-jade); box-shadow: 0 0 6px var(--color-shan-jade); }
 .pin-artisan { background: var(--color-bagan-terracotta); box-shadow: 0 0 6px var(--color-bagan-terracotta); }
@@ -2005,5 +2007,349 @@ button, input, select, textarea {
 
   .map-legend-card {
     padding: 8px 10px;
+  }
+}
+
+.site-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    box-sizing: border-box;
+    background: #1f1610;
+    color: white;
+    text-align: center;
+    padding: 3px;
+    font-size: 12px;
+    line-height: 1.2;
+    z-index: 9999;
+}
+
+.site-footer p {
+    margin: 0;
+}
+
+/* Traveler-first discovery panel */
+.status-banner {
+  background: #261b14;
+  color: var(--color-sand-100);
+}
+
+.split-viewport {
+  height: calc(100vh - var(--header-height) - var(--banner-height) - 22px);
+}
+
+.left-panel {
+  background: var(--color-sand-100);
+  border-right-color: var(--color-sand-200);
+  color: var(--color-teak-900);
+}
+
+.panel-header-sticky {
+  background: rgba(253, 251, 247, 0.98);
+  border-bottom-color: var(--color-sand-200);
+  box-shadow: 0 4px 14px rgba(37, 25, 17, 0.06);
+}
+
+.search-bar-wrap {
+  background: #fff;
+  border-color: var(--color-sand-200);
+  border-radius: var(--radius-lg);
+}
+
+.search-bar-wrap:focus-within {
+  border-color: var(--color-heritage-gold);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.16);
+}
+
+#searchInput {
+  color: var(--color-teak-900);
+}
+
+#searchInput::placeholder {
+  color: #82776b;
+}
+
+.search-icon {
+  color: #806621;
+}
+
+.clear-search-btn {
+  color: #6e6256;
+}
+
+.cat-pill {
+  background: #fff;
+  color: #51483f;
+  border-color: var(--color-sand-200);
+}
+
+.cat-pill:hover {
+  background: var(--color-sand-50);
+  color: var(--color-teak-900);
+}
+
+.cat-pill.active {
+  background: #f2e5bd;
+  color: #594612;
+  border-color: #b89636;
+}
+
+.spatial-controls-bar {
+  color: #6e6256;
+}
+
+.stat-label {
+  color: #51483f;
+}
+
+.count-badge {
+  background: #315b46;
+  color: #fff;
+}
+
+.spatial-filter-details {
+  position: relative;
+  color: #51483f;
+}
+
+.spatial-filter-details summary {
+  cursor: pointer;
+  color: #594612;
+  font-size: 0.75rem;
+  font-weight: 700;
+  list-style-position: inside;
+  white-space: nowrap;
+}
+
+.spatial-filter-details summary:hover {
+  color: #30250f;
+}
+
+.spatial-filter-details[open] {
+  z-index: 30;
+}
+
+.spatial-filter-details[open] .spatial-tools {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 250px;
+  padding: 12px;
+  background: var(--color-sand-50);
+  border: 1px solid var(--color-sand-200);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+}
+
+.radius-label {
+  color: #51483f;
+}
+
+.radius-label span {
+  color: #594612;
+}
+
+.icon-tool-btn {
+  background: #f2e5bd;
+  border-color: #d5c18a;
+  color: #594612;
+}
+
+.icon-tool-btn:hover {
+  background: #ead9a7;
+}
+
+.poi-grid-container {
+  padding: 16px 18px 26px;
+  gap: 12px;
+}
+
+.poi-card {
+  background: #fff;
+  border-color: #e3d9cc;
+  box-shadow: 0 2px 8px rgba(37, 25, 17, 0.06);
+}
+
+.poi-card:hover {
+  border-color: #b89636;
+  box-shadow: 0 8px 20px rgba(37, 25, 17, 0.12);
+}
+
+.poi-card.highlighted {
+  border-color: #b89636;
+  box-shadow: 0 0 0 2px rgba(184, 150, 54, 0.24);
+  background: #fffdf8;
+}
+
+.poi-body {
+  padding: 12px 14px;
+}
+
+.poi-region {
+  color: #73685d;
+}
+
+.poi-distance {
+  color: #69531b;
+}
+
+.poi-title {
+  color: #211811;
+  font-size: 0.94rem;
+}
+
+.poi-tour-title {
+  color: #51483f;
+}
+
+.poi-snippet {
+  color: #6e6256;
+}
+
+.poi-footer-row {
+  border-top-color: #eee7de;
+}
+
+.poi-rating {
+  color: #735b1b;
+}
+
+.poi-price {
+  color: #211811;
+}
+
+.poi-price-sub {
+  color: #73685d;
+}
+
+.btn-card-map {
+  background: #f5f0e8;
+  color: #51483f;
+  border-color: #e3d9cc;
+}
+
+.btn-card-map:hover {
+  background: #eee5d8;
+  color: #594612;
+}
+
+.btn-card-book {
+  background: #315b46;
+  color: #fff;
+}
+
+.btn-card-book:hover {
+  background: #244735;
+}
+
+.map-legend-card {
+  background: rgba(253, 251, 247, 0.94);
+  border-color: rgba(228, 218, 203, 0.9);
+  color: #51483f;
+}
+
+.legend-title {
+  color: #30251c;
+}
+
+.legend-sub {
+  color: #69531b;
+}
+
+.app-header {
+  gap: 12px;
+}
+
+.header-left {
+  min-width: 0;
+  gap: 18px;
+}
+
+.region-nav {
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.region-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.region-btn {
+  white-space: nowrap;
+}
+
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+summary:focus-visible,
+a:focus-visible {
+  outline: 3px solid #aa8725;
+  outline-offset: 3px;
+}
+
+@media (max-width: 900px) {
+  .split-viewport {
+    height: calc(100vh - var(--header-height) - var(--banner-height) - 22px);
+  }
+
+  .panel-header-sticky {
+    background: rgba(253, 251, 247, 0.98);
+  }
+
+  .poi-grid-container {
+    padding: 12px 14px 78px;
+  }
+
+  .spatial-filter-details {
+    margin-left: auto;
+  }
+
+  .spatial-filter-details[open] .spatial-tools {
+    width: min(340px, calc(100vw - 28px));
+  }
+
+  .map-legend-card {
+    color: #51483f;
+  }
+}
+
+@media (max-width: 640px) {
+  :root {
+    --header-height: 56px;
+  }
+
+  .status-banner {
+    height: var(--banner-height);
+  }
+
+  .banner-content {
+    font-size: 0.7rem;
+  }
+
+  .poi-card {
+    grid-template-columns: 96px 1fr;
+  }
+
+  .poi-thumb-wrap {
+    width: 96px;
+  }
+
+  .poi-body {
+    padding: 10px 11px;
+  }
+
+  .poi-title {
+    font-size: 0.88rem;
+  }
+
+  .poi-snippet {
+    font-size: 0.7rem;
+  }
+
+  .spatial-filter-details[open] .spatial-tools {
+    right: -4px;
   }
 }
