@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#1F1610" />
-  <title>Tourist Burma 2.0 | AI-Native Spatial Travel Platform</title>
-  <meta name="description" content="AI-native, spatial travel intelligence platform for discovering sustainable, culturally conscious, and locally owned experiences in Myanmar." />
+  <title>Tourist Burma 2.0 | Discover Myanmar</title>
+  <meta name="description" content="Discover cultural sites, local guides, community stays, and sustainable experiences across Myanmar." />
 
   <!-- Google Fonts: Cinzel, Plus Jakarta Sans, Noto Sans Myanmar, JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -24,13 +24,13 @@
     <div class="banner-content">
       <span class="pulse-indicator"></span>
       <span class="banner-text" id="bannerStatusText">
-        <strong>Field Mode Ready</strong> · Spatial PostGIS Engine Active · Verified Local Community Network (Myanmar)
+        <strong>Discover Myanmar</strong> · Explore cultural sites and local experiences
       </span>
     </div>
     <div class="banner-actions">
-      <button id="btnToggleSimulatedOffline" class="btn-text-link" title="Simulate field connectivity mode">
+      <button id="btnToggleSimulatedOffline" class="btn-text-link" title="Preview the offline-mode interface">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></svg>
-        <span>Toggle Offline Cache</span>
+        <span>Preview Offline Mode</span>
       </button>
       <button class="banner-dismiss" aria-label="Dismiss banner" onclick="document.getElementById('statusBanner').style.display='none'">✕</button>
     </div>
@@ -48,7 +48,7 @@
         </div>
         <div class="logo-text">
           <div class="logo-title">TOURIST BURMA <span class="version-tag">2.0</span></div>
-          <div class="logo-subtitle">AI-SPATIAL TRAVEL ENGINE</div>
+          <div class="logo-subtitle">DISCOVER MYANMAR</div>
         </div>
       </a>
 
@@ -105,7 +105,7 @@
           <input 
             type="text" 
             id="searchInput" 
-            placeholder="Search verified guides, lotus weavers, e-bikes, monasteries..." 
+            placeholder="Search places, guides, crafts, and stays..."
             aria-label="Search experiences" 
             autocomplete="off"
           />
@@ -116,6 +116,9 @@
         <div class="category-scroll-group" role="tablist" aria-label="Experience Categories">
           <button class="cat-pill active" data-category="ALL" role="tab" aria-selected="true">
             <span class="cat-icon">✦</span> All Categories
+          </button>
+          <button class="cat-pill" data-category="SACRED_HERITAGE" role="tab" aria-selected="false">
+            <span class="cat-icon">🛕</span> Sacred Monuments
           </button>
           <button class="cat-pill" data-category="LOCAL_GUIDE" role="tab" aria-selected="false">
             <span class="cat-icon">🧭</span> Local Guides
@@ -131,33 +134,36 @@
           </button>
         </div>
 
-        <!-- Proximity & Spatial Settings Accordion -->
+        <!-- Search results and optional distance filters -->
         <div class="spatial-controls-bar">
           <div class="spatial-stat">
             <span class="count-badge" id="resultsCount">0</span>
-            <span class="stat-label">Verified Providers in Myanmar</span>
+            <span class="stat-label">experiences to explore</span>
           </div>
 
-          <div class="spatial-tools">
-            <div class="radius-control">
-              <label for="radiusSlider" class="radius-label">
-                Radius: <span id="radiusValue">50</span> km
-              </label>
-              <input type="range" id="radiusSlider" min="5" max="300" step="5" value="50" />
+          <details class="spatial-filter-details">
+            <summary>More filters</summary>
+            <div class="spatial-tools">
+              <div class="radius-control">
+                <label for="radiusSlider" class="radius-label">
+                  Within <span id="radiusValue">50</span> km
+                </label>
+                <input type="range" id="radiusSlider" min="5" max="300" step="5" value="50" />
+              </div>
+
+              <button id="btnGeoLocate" class="icon-tool-btn" title="Use your location to find nearby experiences">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <circle cx="12" cy="12" r="3"></circle>
+                  <line x1="12" y1="2" x2="12" y2="5"></line>
+                  <line x1="12" y1="19" x2="12" y2="22"></line>
+                  <line x1="2" y1="12" x2="5" y2="12"></line>
+                  <line x1="19" y1="12" x2="22" y2="12"></line>
+                </svg>
+                <span>Near Me</span>
+              </button>
             </div>
-
-            <button id="btnGeoLocate" class="icon-tool-btn" title="Simulate GPS / PostGIS Proximity Query">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="10"></circle>
-                <circle cx="12" cy="12" r="3"></circle>
-                <line x1="12" y1="2" x2="12" y2="5"></line>
-                <line x1="12" y1="19" x2="12" y2="22"></line>
-                <line x1="2" y1="12" x2="5" y2="12"></line>
-                <line x1="19" y1="12" x2="22" y2="12"></line>
-              </svg>
-              <span>Near Me</span>
-            </button>
-          </div>
+          </details>
         </div>
       </div>
 
@@ -183,10 +189,11 @@
       <div class="map-overlay-bottom-left">
         <div class="map-legend-card">
           <div class="legend-header">
-            <span class="legend-title">Spatial Legend</span>
-            <span class="legend-sub">SRID 4326 PostGIS</span>
+            <span class="legend-title">Map key</span>
+            <span class="legend-sub">Myanmar</span>
           </div>
           <div class="legend-items">
+            <div class="legend-item"><span class="pin-dot pin-heritage"></span> Sacred Temple / Pagoda</div>
             <div class="legend-item"><span class="pin-dot pin-guide"></span> Local Certified Guide</div>
             <div class="legend-item"><span class="pin-dot pin-lodge"></span> Community Eco-Lodge</div>
             <div class="legend-item"><span class="pin-dot pin-artisan"></span> Master Heritage Artisan</div>
@@ -203,6 +210,11 @@
       </div>
     </section>
   </main>
+  <footer class="site-footer">
+    <p>Developed by Aye Aye Khaing (21.10.2026)</p>
+  </footer>
+
+
 
   <!-- Mobile Floating View Switcher (List vs Map) -->
   <button id="btnMobileViewToggle" class="mobile-view-toggle" aria-label="Toggle between list and map view">
@@ -221,7 +233,7 @@
         </div>
         <div>
           <div class="ai-title">Tourist Burma 2.0 AI Concierge</div>
-          <div class="ai-sub">Ethical Tourism · Spatial RAG · Google Gemini 1.5 Pro Engine</div>
+          <div class="ai-sub">Thoughtful travel ideas for Myanmar</div>
         </div>
       </div>
       <button id="btnCloseAiDrawer" class="btn-icon-close" aria-label="Close AI Concierge">✕</button>
@@ -252,8 +264,8 @@
     <div class="quick-prompts-bar">
       <div class="quick-prompts-label">Explore curated spatial prompts:</div>
       <div class="prompt-chips-wrap">
-        <button class="prompt-chip" data-prompt="Plan a 3-day conscious e-bike and quiet sunrise itinerary in Bagan supporting local workshops.">
-          🚲 3-Day Conscious Bagan
+        <button class="prompt-chip" data-prompt="Plan a 3-day conscious e-bike and quiet sunrise itinerary in Bagan covering Ananda Temple, Dhammayangyi, Bupaya, and Shwezigon.">
+          🚲 3-Day Conscious Bagan (Ananda & Temples)
         </button>
         <button class="prompt-chip" data-prompt="Find women-led lotus silk weavers and eco long-tail boats in Inle Lake without commercial souvenir stops.">
           🛶 Inle Lake Artisans
@@ -281,7 +293,7 @@
         </button>
       </div>
       <div class="chat-input-footer">
-        <span class="powered-tag">Vercel AI SDK Core · Gemini 1.5 Pro · PostGIS Proximity</span>
+        <span class="powered-tag">Travel ideas · Local experiences</span>
         <button type="button" id="btnClearChatHistory" class="clear-chat-btn">Clear Conversation</button>
       </div>
     </form>
@@ -308,6 +320,7 @@
         <div class="form-group">
           <label for="vendorCategory">Category *</label>
           <select id="vendorCategory" required>
+            <option value="SACRED_HERITAGE">Sacred Heritage / Temple Trust</option>
             <option value="LOCAL_GUIDE">Local Guide (Certified)</option>
             <option value="ECO_LODGE">Eco-Lodge / Community Homestay</option>
             <option value="ARTISAN">Master Artisan / Craft Guild</option>
@@ -448,17 +461,22 @@
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
           <span>Direct Inquiry (No Booking Fees)</span>
         </button>
+     
       </div>
     </div>
   </div>
 
   <!-- Toast Notification Container -->
-  <div id="toastContainer" class="toast-container" aria-live="assertive"></div>
+   
 
+  <div id="toastContainer" class="toast-container" aria-live="assertive"></div>
+  
   <!-- Leaflet Maps Script -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
   <!-- Application Logic -->
   <script src="app.js"></script>
+  
+    
 </body>
 </html>
