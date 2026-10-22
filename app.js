@@ -12,6 +12,86 @@ const FALLBACK_HERITAGE_IMAGE = "data:image/svg+xml;utf8,<svg xmlns='http://www.
 
 const INITIAL_PROVIDERS = [
   {
+    id: "poi-bagan-ananda",
+    name: "Ananda Temple (အာနန္ဒာဘုရား)",
+    category: "SACRED_HERITAGE",
+    region: "Bagan",
+    latitude: 21.1708,
+    longitude: 94.8679,
+    address: "Old Bagan Archaeological Zone, East of Tharabar Gate",
+    rating: 5.0,
+    isVerified: true,
+    image: "images/ananda-temple.jpg",
+    tours: [
+      {
+        title: "Four Colossal Standing Buddhas & 1,400 Glazed Jataka Tiles",
+        description: "Built in 1105 AD by King Kyansittha, revered as the 'Westminster Abbey of Burma'. Marvel at the four 9.5-meter gilded standing Buddhas facing cardinal directions and over 1,400 glazed terracotta tiles illustrating the Jataka tales.",
+        priceUsd: 0
+      }
+    ],
+    culturalNotes: "Strict barefoot protocol: Remove shoes and socks completely before crossing the outer archway. Dress respectfully with shoulders and knees covered. Maintain silence within inner ambulatory corridors."
+  },
+  {
+    id: "poi-bagan-dhammayangyi",
+    name: "Dhammayangyi Temple ()",
+    category: "SACRED_HERITAGE",
+    region: "Bagan",
+    latitude: 21.1620,
+    longitude: 94.8729,
+    address: "Central Bagan Plain, 1 km Southeast of Old Bagan",
+    rating: 4.98,
+    isVerified: true,
+    image: "images/dhammayangyi-temple.jpg",
+    tours: [
+      {
+        title: "Massive Mortarless Brickwork & Mystic Walled Corridors Exploration",
+        description: "The most massive temple in Bagan, constructed under King Narathu (1167–1170 AD). Renowned for interlocking brick masonry laid without mortar so tightly that a knife blade cannot penetrate, and its enigmatic blocked inner sanctuaries.",
+        priceUsd: 0
+      }
+    ],
+    culturalNotes: "Do not attempt to scale exterior terraces or brick ledges. Please observe quiet reverence near the dual Gautama and Maitreya Buddha shrines."
+  },
+  {
+    id: "poi-bagan-bupaya",
+    name: "Bupaya Pagoda (ဗူးဘုရား)",
+    category: "SACRED_HERITAGE",
+    region: "Bagan",
+    latitude: 21.1764,
+    longitude: 94.8581,
+    address: "Northern Old Bagan Riverbank, Ayeyarwady River Promontory",
+    rating: 4.95,
+    isVerified: true,
+    image: "images/bupaya-pagoda.jpg",
+    tours: [
+      {
+        title: "Golden Gourd Stupa & Ayeyarwady River Sunset Panorama",
+        description: "Perched on a scenic promontory on the bend of the Ayeyarwady River, this bulbous gourd-shaped gilded stupa traditionally dates to King Pyusawhti (c. 162–243 AD). Bagan's most celebrated riverside sunset vantage point overlooking local wooden longboats.",
+        priceUsd: 0
+      }
+    ],
+    culturalNotes: "Watch your step along the riverbank stone steps. Shoes and socks must be left at the lower gate. Commercial drone photography without archaeological permits is strictly prohibited."
+  },
+  {
+    id: "poi-bagan-shwezigon",
+    name: "Shwezigon Pagoda (ရွှေစည်းခုံစေတီတော်)",
+    category: "SACRED_HERITAGE",
+    region: "Bagan",
+    latitude: 21.1953,
+    longitude: 94.8939,
+    address: "Nyaung-U Heritage Sector, Northeast Bagan Archaeological Zone",
+    rating: 5.0,
+    isVerified: true,
+    image: "images/shwezigon-pagoda.jpg",
+    tours: [
+      {
+        title: "Sacred Tooth Relic Shrine & 37 Nat Pantheon Pilgrimage",
+        description: "Begun by King Anawrahta in 1059 AD and completed by King Kyansittha in 1102 AD. The golden bell prototype for all subsequent Burmese stupas, enshrining sacred bone and tooth relics of the Buddha, with dedicated pavilions honoring the 37 pre-Buddhist Nats.",
+        priceUsd: 0
+      }
+    ],
+    culturalNotes: "Circumambulate clockwise (sunwise) around the golden stupa terrace. Remove all hats, shoes, and socks. Traditional Thanaka face paste and longyis available at entry gates."
+  },
+  {
     id: "poi-bagan-01",
     name: "Minnanthu Women's Cotton & Lotus Guild",
     category: "ARTISAN",
@@ -56,8 +136,8 @@ const INITIAL_PROVIDERS = [
     name: "Daw Khin Myo Monastic Heritage Walk",
     category: "LOCAL_GUIDE",
     region: "Bagan",
-    latitude: 21.1680,
-    longitude: 94.8620,
+    latitude: 21.1708,
+    longitude: 94.8679,
     address: "Ananda Temple Precinct, Old Bagan",
     rating: 4.98,
     isVerified: true,
@@ -296,7 +376,7 @@ const INITIAL_PROVIDERS = [
 // Region coordinates for quick camera navigation
 const REGION_COORDINATES = {
   all: { center: [20.5, 96.0], zoom: 6 },
-  bagan: { center: [21.168, 94.865], zoom: 13 },
+  bagan: { center: [21.1720, 94.8720], zoom: 13 },
   inle: { center: [20.545, 96.910], zoom: 12 },
   yangon: { center: [16.780, 96.160], zoom: 13 },
   mandalay: { center: [21.940, 96.070], zoom: 12 },
@@ -314,7 +394,7 @@ const AppState = {
   activeRegion: "all",
   searchQuery: "",
   searchRadiusKm: 50,
-  userLocation: { latitude: 21.1680, longitude: 94.8620 }, // Defaults to Bagan Heritage Zone
+  userLocation: { latitude: 21.1708, longitude: 94.8679 }, // Defaults to Ananda Temple in Bagan Heritage Zone
   currency: "USD", // "USD" or "MMK"
   exchangeRateMmK: 3500, // 1 USD = 3,500 MMK
   language: "EN", // "EN" or "MY"
@@ -355,19 +435,17 @@ let tileLayerInstance = null;
 
 const MAP_TILE_THEMES = {
   dark: {
-    url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
     options: {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      subdomains: 'abc',
+      attribution: 'Tiles &copy; Esri &mdash; Sources: Esri, HERE, Garmin, Intermap, increment P Corp., GEBCO, USGS, FAO, NPS, NRCAN, GeoBase, IGN, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), (c) OpenStreetMap contributors, and the GIS User Community',
       maxZoom: 19,
       className: 'map-dark-tiles'
     }
   },
   heritage: {
-    url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
     options: {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      subdomains: 'abc',
+      attribution: 'Tiles &copy; Esri &mdash; Sources: Esri, HERE, Garmin, Intermap, increment P Corp., GEBCO, USGS, FAO, NPS, NRCAN, GeoBase, IGN, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), (c) OpenStreetMap contributors, and the GIS User Community',
       maxZoom: 19
     }
   },
@@ -418,6 +496,7 @@ function setMapTheme(themeKey) {
 
 function getCategoryColor(category) {
   switch (category) {
+    case "SACRED_HERITAGE": return "var(--color-heritage-gold)";
     case "LOCAL_GUIDE": return "var(--color-inle-azure)";
     case "ECO_LODGE": return "var(--color-shan-jade)";
     case "ARTISAN": return "var(--color-bagan-terracotta)";
@@ -428,6 +507,7 @@ function getCategoryColor(category) {
 
 function getCategoryIcon(category) {
   switch (category) {
+    case "SACRED_HERITAGE": return "🛕";
     case "LOCAL_GUIDE": return "🧭";
     case "ECO_LODGE": return "🏡";
     case "ARTISAN": return "🏺";
@@ -623,7 +703,7 @@ function renderPoiList() {
               </div>
               <div class="poi-price-wrap">
                 <div class="poi-price">${formattedPrice}</div>
-                <div class="poi-price-sub">direct community price</div>
+                <div class="poi-price-sub">${poi.category === "SACRED_HERITAGE" ? "archaeological zone pass" : "direct community price"}</div>
               </div>
             </div>
 
@@ -632,7 +712,7 @@ function renderPoiList() {
                 📍 Map
               </button>
               <button class="btn-card-action btn-card-book" onclick="openProviderDetailModal('${poi.id}')">
-                ✦ Details & Direct Inquiry
+                ${poi.category === "SACRED_HERITAGE" ? "✦ Heritage Details" : "✦ Details & Direct Inquiry"}
               </button>
             </div>
           </div>
@@ -696,6 +776,9 @@ function setMobileView(mode) {
 // ============================================================================
 
 function formatPrice(usdAmount) {
+  if (usdAmount === 0) {
+    return "Heritage Zone Pass";
+  }
   if (AppState.currency === "USD") {
     return `$${usdAmount} USD`;
   } else {
@@ -745,36 +828,36 @@ function toggleLanguage() {
 
 const CURATED_AI_RESPONSES = {
   bagan: {
-    text: `Here is a **3-Day Low-Carbon, Culturally Conscious Itinerary for Bagan**. It is designed to minimize vibration damage to ancient monument mortar by utilizing silent e-bikes and directing your tourism spend to local families:`,
+    text: `Here is a **3-Day Low-Carbon, Culturally Conscious Itinerary for Bagan**. It connects Bagan's most revered monuments—**Ananda Temple**, **Shwezigon Pagoda**, **Dhammayangyi Temple**, and **Bupaya Pagoda**—using silent e-bikes and verified local guides while protecting ancient terracotta brickwork:`,
     itinerary: {
-      title: "3-Day Conscious Bagan Heritage Circuit",
+      title: "3-Day Conscious Bagan Heritage & Pagoda Circuit",
       days: [
         {
-          day: "Day 1: Ancient Brick & Secret Lotus Threads",
+          day: "Day 1: Sacred Shwezigon & Ananda's Golden Spire",
           steps: [
-            "06:00 AM — Silent e-bike ride to Kyauk Gu Umin for a serene sunrise away from crowded terraces.",
-            "10:30 AM — Hands-on organic cotton spinning at Minnanthu Women's Cooperative ($25 USD).",
-            "04:30 PM — Quiet sunset tea at riverside teak pavilion overlooking the Irrawaddy."
+            "06:30 AM — Silent e-bike ride to Shwezigon Pagoda (Nyaung-U) for quiet morning meditation before crowds arrive.",
+            "10:00 AM — Explore Ananda Temple with Daw Khin Myo, admiring four 9.5m colossal standing Buddhas and glazed Jatakas.",
+            "03:00 PM — Traditional spun yarn and natural dyeing workshop at Minnanthu Women's Cooperative ($25 USD)."
           ],
-          waypoints: [[21.1610, 94.8875], [21.1718, 94.8585]]
+          waypoints: [[21.1953, 94.8939], [21.1708, 94.8679], [21.1610, 94.8875]]
         },
         {
-          day: "Day 2: Sacred Murals & Monastic Lineage",
+          day: "Day 2: Dhammayangyi Masonry & Myinkaba Lacquerware",
           steps: [
-            "08:30 AM — Guided walk through hidden 11th-century Jataka frescoes with Daw Khin Myo ($45 USD).",
-            "01:00 PM — Traditional vegetarian feast at Sanon Training Restaurant (youth hospitality charity).",
-            "04:00 PM — Master lacquerware workshop tour in Myinkaba village."
+            "07:30 AM — Witness dawn mist over the immense mortarless brickwork of Dhammayangyi Temple.",
+            "11:00 AM — Master lacquerware workshop tour and bamboo carving in historic Myinkaba village.",
+            "04:00 PM — Rest and organic Shan tea tasting at Bagan Teak Sanctuary Eco-Lodge."
           ],
-          waypoints: [[21.1680, 94.8620], [21.1550, 94.8720]]
+          waypoints: [[21.1620, 94.8729], [21.1550, 94.8720]]
         },
         {
-          day: "Day 3: Rural Palm Sugar & Solitude",
+          day: "Day 3: Rural Plain & Bupaya Ayeyarwady River Sunset",
           steps: [
-            "07:30 AM — Cycle to West Pwasaw rural toddy palm grove for traditional jaggery sampling.",
-            "02:00 PM — Rest and tea meditation at Bagan Teak Sanctuary Eco-Lodge.",
-            "05:30 PM — Solar longboat twilight sail along the quiet sandbars of Old Bagan."
+            "08:00 AM — Silent e-bike trail through sandy village paths and hidden 12th-century stupas with U Min Lha E-Bikes.",
+            "01:30 PM — Farm-to-table lunch at Sanon Social Enterprise restaurant.",
+            "05:00 PM — Golden hour and twilight meditation at Bupaya Pagoda watching traditional wooden boats on the Ayeyarwady River."
           ],
-          waypoints: [[21.1550, 94.8720], [21.1718, 94.8585]]
+          waypoints: [[21.1718, 94.8585], [21.1764, 94.8581]]
         }
       ],
       culturalNote: "Remember: Footwear and socks must be removed before entering any pagoda archway or sacred enclosure."
@@ -1238,6 +1321,11 @@ function openProviderDetailModal(poiId) {
   categoryBadge.textContent = poi.category.replace('_', ' ');
   title.textContent = poi.name;
   locationSub.textContent = `${poi.address} · ${poi.region}, Myanmar`;
+  
+  const priceBoxLabel = document.querySelector(".detail-price-label");
+  if (priceBoxLabel) {
+    priceBoxLabel.textContent = poi.category === "SACRED_HERITAGE" ? "ENTRY ACCESS" : "DIRECT PRICE";
+  }
   priceVal.textContent = formatPrice(poi.tours[0].priceUsd);
   desc.textContent = `${poi.tours[0].title} — ${poi.tours[0].description}`;
 
@@ -1245,7 +1333,7 @@ function openProviderDetailModal(poiId) {
     etiquette.innerHTML = `
       <p>• ${poi.culturalNotes}</p>
       <p>• Remove all footwear, including socks, before entering sacred precincts.</p>
-      <p>• Direct community booking guarantees zero commission leakages.</p>
+      <p>• ${poi.category === "SACRED_HERITAGE" ? "Protect 1,000-year-old terracotta brickwork and mural plaster." : "Direct community booking guarantees zero commission leakages."}</p>
     `;
   }
 
@@ -1265,10 +1353,25 @@ function openProviderDetailModal(poiId) {
 
   const btnInquire = document.getElementById("btnDirectInquiry");
   if (btnInquire) {
-    btnInquire.onclick = () => {
-      showToast(`Inquiry sent directly to ${poi.name}. Zero middlemen.`);
-      closeDetailModal();
-    };
+    if (poi.category === "SACRED_HERITAGE") {
+      btnInquire.innerHTML = `
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <span>Temple Etiquette & Pilgrimage Guide</span>
+      `;
+      btnInquire.onclick = () => {
+        showToast(`Cultural etiquette and archaeological notes loaded for ${poi.name}.`);
+        closeDetailModal();
+      };
+    } else {
+      btnInquire.innerHTML = `
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+        <span>Direct Inquiry (No Booking Fees)</span>
+      `;
+      btnInquire.onclick = () => {
+        showToast(`Inquiry sent directly to ${poi.name}. Zero middlemen.`);
+        closeDetailModal();
+      };
+    }
   }
 }
 
@@ -1415,7 +1518,7 @@ function setupEventListeners() {
           () => {
             // Fallback simulation toggle
             AppState.userLocation = { latitude: 20.5450, longitude: 96.9100 }; // Inle Lake
-            showToast("Simulating GPS in Inle Lake Zone");
+            showToast("Location unavailable. Showing nearby results around Inle Lake as a preview.");
             filterAndRenderProviders();
           }
         );
@@ -1473,11 +1576,11 @@ function setupEventListeners() {
       const statusText = document.getElementById("bannerStatusText");
       if (statusText) {
         if (AppState.offlineSimulated) {
-          statusText.innerHTML = `<strong>Offline Field Mode Active</strong> · Serving 100% Cached Vector Data & Stored Itineraries · Zero Network Latency`;
-          showToast("Simulating field mode: all itineraries and local providers cached in local storage.");
+          statusText.innerHTML = `<strong>Offline Mode Preview</strong> · Interface preview only; live offline caching is not connected`;
+          showToast("Offline mode is a preview only; live offline caching is not connected.");
         } else {
-          statusText.innerHTML = `<strong>Field Mode Ready</strong> · Spatial PostGIS Engine Active · Verified Local Community Network (Myanmar)`;
-          showToast("Reconnected to live cloud synchronization.");
+          statusText.innerHTML = `<strong>Discover Myanmar</strong> · Explore cultural sites and local experiences`;
+          showToast("Returned to the standard browsing view.");
         }
       }
     });
