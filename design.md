@@ -351,3 +351,47 @@ components/
 ## 11. Conclusion & Next Steps
 
 This design specification forms the blueprint for Tourist Burma 2.0. By coupling high-precision spatial cartography with culturally conscious generative intelligence, Tourist Burma 2.0 provides an unprecedented travel platform that empowers travelers while honoring and sustaining the heritage and communities of Myanmar.
+
+---
+
+## 12. Current Website Theme Redesign Plan
+
+This section defines the visual direction for the existing single-page website in `index.html`, `styles.css`, and `app.js`. It takes precedence over earlier dark-theme mockups where they conflict with the current implementation.
+
+### 12.1 Product Story
+
+Present Tourist Burma as a thoughtful field guide to Myanmar, not a generic booking marketplace. Lead with the promise of meeting Myanmar locally: independent guides, community stays, living craft traditions, and respectful visits to heritage sites. Keep direct community benefit and cultural care visible without making the interface feel like an administrative dashboard.
+
+### 12.2 Visual Direction
+
+- Use a warm, daylight palette inspired by Shan paper, thanaka, aged brass, teak, and highland greenery.
+- Keep the discovery canvas light: soft paper backgrounds, warm white cards, quiet borders, and restrained shadows.
+- Use deep forest green for primary actions and community-oriented status; reserve muted antique gold for heritage details and highlights.
+- Use terracotta, lake blue, and jade as supporting category colors rather than competing page-wide accents.
+- Keep Cinzel for selective display moments and use the existing sans-serif and Myanmar font stacks for readable interface text.
+- Favor editorial hierarchy, generous breathing room, and understated card treatments over glowing borders and high-contrast dark surfaces.
+
+### 12.3 Page and Component Plan
+
+1. **Brand and status:** Keep the pagoda mark and Myanmar identity. Make the status banner communicate purposeful, locally rooted travel in a calm forest-green strip.
+2. **Discovery introduction:** Introduce the explorer with a concise, traveler-facing headline and supporting line before search and filters.
+3. **Search and filters:** Preserve the existing search, region navigation, category filters, radius control, and geolocation. Style them as clear, tactile paper-and-ink controls.
+4. **Experience cards:** Keep provider imagery, place and region details, verification, direct community pricing, and map/detail actions. Use warm cards with visible information hierarchy.
+5. **Map:** Retain the split map-and-list experience and all map controls. Use the heritage parchment map as the initial view; keep night and terrain styles available as alternatives.
+6. **Concierge and provider dialogs:** Apply the same light surfaces and forest-green actions to the AI drawer, vendor onboarding, provider details, and notifications so overlays feel part of the same product.
+7. **Mobile:** Preserve the existing list/map switch and compact header. Keep the new introduction concise and ensure it does not crowd the filters or obscure the floating map switch.
+
+### 12.4 Functional and Content Guardrails
+
+- Treat this as a visual redesign: retain existing element IDs, data attributes, event hooks, map behavior, filtering, currency/language controls, and dialog flows.
+- Keep ethical commitments understandable and credible; do not imply verification or certification beyond what the interface currently supports.
+- Use existing local imagery and current fonts; do not add new packages or require new API credentials for the theme.
+- Maintain visible keyboard focus, readable contrast, and labels for assistive technology.
+
+### 12.5 Completion Criteria
+
+- The first viewport immediately communicates locally rooted, culturally respectful Myanmar travel.
+- The warm paper, forest, and antique-gold palette is consistent across the header, discovery panel, map overlays, cards, and dialogs.
+- The heritage map is selected on initial load and the map-style buttons accurately reflect the current selection.
+- Search, filtering, location, map, concierge, vendor, and provider-detail interactions remain functional.
+- Desktop retains the side-by-side discovery layout; narrower screens retain usable list/map navigation without horizontal overflow.

@@ -469,8 +469,7 @@ function initMap() {
     zoomControl: true
   });
 
-  // Default to Dark Teak style
-  setMapTheme("dark");
+  setMapTheme("heritage");
 
   // Handle map click for vendor coordinate picking
   mapInstance.on("click", (e) => {
